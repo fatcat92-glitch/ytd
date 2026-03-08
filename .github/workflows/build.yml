@@ -54,7 +54,7 @@ jobs:
         run: python -c "import tkinter; print('✅ tkinter is working')"
 
       - name: Build macOS executable
-        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean youtube_downloader.py
+        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean ytd.py
 
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
