@@ -21,7 +21,7 @@ jobs:
           pip install pyinstaller yt-dlp pillow
 
       - name: Build Windows .exe
-        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean youtube_downloader.py
+        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean ytd.py
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
