@@ -5,12 +5,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-
+  build-windows:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -24,14 +20,44 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyinstaller yt-dlp pillow
 
-      - name: Build with PyInstaller
-        run: |
-          pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean ytd.py
+      - name: Build Windows .exe
+        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean youtube_downloader.py
 
-      - name: Upload artifact
+      - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: YouTubeDownloader-${{ runner.os }}
-          path: |
-            dist/YouTubeDownloader.exe
-            dist/YouTubeDownloader
+          name: YouTubeDownloader-Windows
+          path: dist/YouTubeDownloader.exe
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install tkinter system libraries (macOS)
+        run: |
+          brew install tcl-tk
+          echo "TCLTK=$(brew --prefix tcl-tk)" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$(brew --prefix tcl-tk)/lib/pkgconfig" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller yt-dlp pillow
+
+      - name: Test tkinter (debug)
+        run: python -c "import tkinter; print('✅ tkinter is working')"
+
+      - name: Build macOS executable
+        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean youtube_downloader.py
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: YouTubeDownloader-macOS
+          path: dist/YouTubeDownloader
