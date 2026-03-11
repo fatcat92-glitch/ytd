@@ -21,7 +21,7 @@ jobs:
           pip install pyinstaller yt-dlp pillow
 
       - name: Build Windows .exe
-        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean ytd.py
+        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean ytd2.py
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
@@ -54,7 +54,7 @@ jobs:
         run: python -c "import tkinter; print('✅ tkinter is working')"
 
       - name: Build macOS executable
-        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean ytd.py
+        run: pyinstaller --onefile --windowed --name "YouTubeDownloader" --clean ytd2.py
 
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
